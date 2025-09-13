@@ -1,0 +1,35 @@
+apiVersion: 1
+
+groups:
+  - name: echec-detecte
+    orgId: 1
+    folder: data-alerts
+    interval: 1m
+    rules:
+      - uid: echec-detecte
+        title: "Échec détecté (critique)"
+        condition: A
+        data:
+          - refId: A
+            queryType: ""
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasource:
+              type: loki
+              uid: Loki
+            model:
+              expr: 'count_over_time({job="kafka-logs"} |= "FAILED" [5m])'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        noDataState: OK
+        execErrState: OK
+        for: 2m
+        annotations:
+          description: "{{ $value }} échecs détectés en 5 minutes (seuil: 3)"
+          summary: "Échecs multiples dans le pipeline - Investigation requise"
+        labels:
+          severity: critical
+          team: data-engineering
+          pipeline: ingestion
+        is_paused: false

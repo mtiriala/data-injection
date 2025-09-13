@@ -1,0 +1,60 @@
+apiVersion: 1
+
+groups:
+  - name: surconsommation-ressources
+    orgId: 1
+    folder: data-alerts
+    interval: 2m
+    rules:
+      - uid: surconsommation-memoire
+        title: "Surconsommation mémoire"
+        condition: A
+        data:
+          - refId: A
+            queryType: ""
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasource:
+              type: loki
+              uid: Loki
+            model:
+              expr: 'rate({job="kafka-logs"}[5m])'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        noDataState: OK
+        execErrState: OK
+        for: 5m
+        annotations:
+          description: "Débit élevé détecté (proxy pour mémoire)"
+          summary: "Activité élevée détectée"
+        labels:
+          severity: warning
+          team: data-engineering
+        is_paused: false
+      - uid: surconsommation-cpu
+        title: "Surconsommation CPU"
+        condition: A
+        data:
+          - refId: A
+            queryType: ""
+            relativeTimeRange:
+              from: 300
+              to: 0
+            datasource:
+              type: loki
+              uid: Loki
+            model:
+              expr: 'rate({job="kafka-logs"}[5m])'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        noDataState: OK
+        execErrState: OK
+        for: 5m
+        annotations:
+          description: "Débit élevé détecté (proxy pour CPU)"
+          summary: "Activité CPU élevée détectée"
+        labels:
+          severity: warning
+          team: data-engineering
+        is_paused: false

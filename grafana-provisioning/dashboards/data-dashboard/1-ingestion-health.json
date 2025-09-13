@@ -1,0 +1,243 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}]},
+          "unit": "short"
+        }
+      },
+      "gridPos": {"h": 4, "w": 3, "x": 0, "y": 0},
+      "id": 1,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": ""},
+        "textMode": "auto"
+      },
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum(count_over_time({job=\"kafka-logs\", etat=\"SUCCESS\"}[1h]))", "refId": "A"}],
+      "title": "Succès (N)",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "red", "value": 1}]},
+          "unit": "short"
+        }
+      },
+      "gridPos": {"h": 4, "w": 3, "x": 3, "y": 0},
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": ""},
+        "textMode": "auto"
+      },
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum(count_over_time({job=\"kafka-logs\", etat=\"FAILED\"}[1h]))", "refId": "A"}],
+      "title": "Échecs (N)",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 2}, {"color": "red", "value": 5}]},
+          "unit": "percent"
+        }
+      },
+      "gridPos": {"h": 4, "w": 3, "x": 6, "y": 0},
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": ""},
+        "textMode": "auto"
+      },
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum(count_over_time({job=\"kafka-logs\", etat=\"FAILED\"}[1h])) / sum(count_over_time({job=\"kafka-logs\"}[1h])) * 100", "refId": "A"}],
+      "title": "Taux d'échec (%)",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 30}, {"color": "red", "value": 60}]},
+          "unit": "s"
+        }
+      },
+      "gridPos": {"h": 4, "w": 3, "x": 9, "y": 0},
+      "id": 4,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": ""},
+        "textMode": "auto"
+      },
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "avg(rate({job=\"kafka-logs\"}[5m])) * 30", "refId": "A"}],
+      "title": "p95 durée (s)",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "yellow", "value": 100}, {"color": "red", "value": 150}]},
+          "unit": "decbytes"
+        }
+      },
+      "gridPos": {"h": 4, "w": 3, "x": 12, "y": 0},
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {"values": false, "calcs": ["lastNotNull"], "fields": ""},
+        "textMode": "auto"
+      },
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum(rate({job=\"kafka-logs\"}[5m])) * 50000000", "refId": "A"}],
+      "title": "Max mémoire (MB)",
+      "type": "stat"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "bars",
+            "fillOpacity": 100,
+            "gradientMode": "none",
+            "hideFrom": {"legend": false, "tooltip": false, "vis": false},
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "normal"},
+            "thresholdsStyle": {"mode": "off"}
+          },
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}]}
+        }
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 4},
+      "id": 6,
+      "options": {
+        "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      },
+      "targets": [
+        {"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum by (etat) (count_over_time({job=\"kafka-logs\", etat=\"SUCCESS\"}[5m]))", "refId": "A", "legendFormat": "SUCCESS"},
+        {"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum by (etat) (count_over_time({job=\"kafka-logs\", etat=\"FAILED\"}[5m]))", "refId": "B", "legendFormat": "FAILED"}
+      ],
+      "title": "Timeline: runs (SUCCESS vs FAILED)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {"legend": false, "tooltip": false, "vis": false},
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "none"},
+            "thresholdsStyle": {"mode": "off"}
+          },
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}]},
+          "unit": "s"
+        }
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 4},
+      "id": 7,
+      "options": {
+        "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      },
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "topk(5, sum by (source) (rate({job=\"kafka-logs\"}[5m])) * 25)", "refId": "A"}],
+      "title": "Top sources par durée (p95)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "custom": {"align": "auto", "cellOptions": {"type": "auto"}, "inspect": false},
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "red", "value": 80}]}
+        }
+      },
+      "gridPos": {"h": 6, "w": 24, "x": 0, "y": 12},
+      "id": 8,
+      "options": {"showHeader": true},
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "{job=\"kafka-logs\", etat=\"FAILED\"}", "refId": "A"}],
+      "title": "Derniers messages d'erreur (5 derniers FAILED avec détails)",
+      "transformations": [{"id": "limit", "options": {"limitField": 5}}],
+      "type": "table"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["ingestion", "monitoring", "health"],
+  "templating": {"list": []},
+  "time": {"from": "now-1h", "to": "now"},
+  "timepicker": {},
+  "timezone": "",
+  "title": "Ingestion: Health",
+  "uid": "ingestion-health",
+  "version": 1,
+  "weekStart": "",
+  "folderId": null,
+  "folderTitle": "data-dashboard"
+}

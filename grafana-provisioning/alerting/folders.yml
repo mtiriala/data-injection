@@ -1,0 +1,6 @@
+apiVersion: 1
+
+folders:
+  - title: "data-alerts"
+    uid: "data-alerts"
+    orgId: 1

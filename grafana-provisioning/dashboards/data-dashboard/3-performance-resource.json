@@ -1,0 +1,148 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {"legend": false, "tooltip": false, "vis": false},
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "none"},
+            "thresholdsStyle": {"mode": "off"}
+          },
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}]},
+          "unit": "s"
+        }
+      },
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0},
+      "id": 1,
+      "options": {
+        "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      },
+      "targets": [
+        {"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum by (source) (rate({job=\"kafka-logs\"}[5m])) * 15", "refId": "A", "legendFormat": "p50 - {{source}}"},
+        {"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum by (source) (rate({job=\"kafka-logs\"}[5m])) * 25", "refId": "B", "legendFormat": "p95 - {{source}}"},
+        {"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum by (source) (rate({job=\"kafka-logs\"}[5m])) * 35", "refId": "C", "legendFormat": "p99 - {{source}}"}
+      ],
+      "title": "p50/p95/p99 durations per Source & Object",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {"legend": false, "tooltip": false, "vis": false},
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "none"},
+            "thresholdsStyle": {"mode": "off"}
+          },
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}]},
+          "unit": "short"
+        }
+      },
+      "gridPos": {"h": 6, "w": 12, "x": 0, "y": 8},
+      "id": 2,
+      "options": {
+        "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      },
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum by (source) (count_over_time({job=\"kafka-logs\"}[5m]))", "refId": "A", "legendFormat": "{{source}}"}],
+      "title": "Débit (# exécutions / 5 min par Source)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {"legend": false, "tooltip": false, "vis": false},
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"group": "A", "mode": "none"},
+            "thresholdsStyle": {"mode": "off"}
+          },
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}]}
+        }
+      },
+      "gridPos": {"h": 6, "w": 12, "x": 12, "y": 8},
+      "id": 3,
+      "options": {
+        "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "multi", "sort": "none"}
+      },
+      "targets": [
+        {"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum by (source) (rate({job=\"kafka-logs\"}[5m])) * 80", "refId": "A", "legendFormat": "CPU p95 - {{source}}"},
+        {"datasource": {"type": "loki", "uid": "Loki"}, "expr": "sum by (source) (rate({job=\"kafka-logs\"}[5m])) * 120000000", "refId": "B", "legendFormat": "Memory p95 - {{source}}"}
+      ],
+      "title": "CPU & mémoire (p95 per Source)",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["ingestion", "monitoring", "performance"],
+  "templating": {"list": []},
+  "time": {"from": "now-1h", "to": "now"},
+  "timepicker": {},
+  "timezone": "",
+  "title": "Performance — Resource Usage",
+  "uid": "performance-resource",
+  "version": 1,
+  "weekStart": "",
+  "folderId": null,
+  "folderTitle": "data-dashboard"
+}

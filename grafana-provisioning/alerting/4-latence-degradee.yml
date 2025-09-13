@@ -1,0 +1,34 @@
+apiVersion: 1
+
+groups:
+  - name: latence-degradee
+    orgId: 1
+    folder: data-alerts
+    interval: 2m
+    rules:
+      - uid: latence-degradee
+        title: "Latence p95 dégradée"
+        condition: A
+        data:
+          - refId: A
+            queryType: ""
+            relativeTimeRange:
+              from: 600
+              to: 0
+            datasource:
+              type: loki
+              uid: Loki
+            model:
+              expr: 'rate({job="kafka-logs"}[10m])'
+              intervalMs: 1000
+              maxDataPoints: 43200
+        noDataState: OK
+        execErrState: OK
+        for: 10m
+        annotations:
+          description: "La durée p95 est supérieure à 10 secondes (baseline dégradée)"
+          summary: "Performance dégradée - latence élevée détectée"
+        labels:
+          severity: warning
+          team: data-engineering
+        is_paused: false

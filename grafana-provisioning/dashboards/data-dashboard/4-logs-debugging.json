@@ -1,0 +1,101 @@
+{
+  "annotations": {"list": []},
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": {"type": "loki", "uid": "Loki"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "custom": {
+            "align": "auto",
+            "cellOptions": {"type": "auto"},
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {"steps": [{"color": "green", "value": null}, {"color": "red", "value": 80}]}
+        },
+        "overrides": [
+          {
+            "matcher": {"id": "byName", "options": "etat"},
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {"type": "color-background"}
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {"options": {"SUCCESS": {"color": "green", "index": 0}}, "type": "value"},
+                  {"options": {"FAILED": {"color": "red", "index": 1}}, "type": "value"}
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {"h": 16, "w": 24, "x": 0, "y": 0},
+      "id": 1,
+      "options": {
+        "showHeader": true,
+        "sortBy": [{"desc": true, "displayName": "Time"}]
+      },
+      "targets": [{"datasource": {"type": "loki", "uid": "Loki"}, "expr": "{job=\"kafka-logs\"}", "refId": "A"}],
+      "title": "Table filtrable: Debut, Fin, Durée secondes, cpu_time, memory_used, Description",
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "format": "json",
+            "source": "Line"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {"id": true, "tsNs": true},
+            "indexByName": {
+              "Time": 0,
+              "etat": 1,
+              "source": 2,
+              "Duree_secondes": 3,
+              "cpu_time": 4,
+              "memory_used": 5,
+              "Description": 6
+            },
+            "renameByName": {
+              "Time": "Debut",
+              "etat": "État",
+              "source": "Source",
+              "Duree_secondes": "Durée (s)",
+              "cpu_time": "CPU Time",
+              "memory_used": "Memory Used",
+              "Description": "Description"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["ingestion", "monitoring", "logs", "debugging"],
+  "templating": {"list": []},
+  "time": {"from": "now-1h", "to": "now"},
+  "timepicker": {},
+  "timezone": "",
+  "title": "Détails — Logs & Debugging",
+  "uid": "logs-debugging",
+  "version": 1,
+  "weekStart": "",
+  "folderId": null,
+  "folderTitle": "data-dashboard"
+}

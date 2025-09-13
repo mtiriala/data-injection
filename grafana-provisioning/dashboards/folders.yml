@@ -1,0 +1,6 @@
+apiVersion: 1
+
+folders:
+  - title: "data dashboard"
+    uid: "data-dashboard"
+    orgId: 1
