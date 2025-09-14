@@ -1,10 +1,10 @@
-# 📊 Système de Monitoring d'Ingestion de Données
+# Système de Monitoring d'Ingestion de Données
 
-## 🎯 Vue d'ensemble
+##  Vue d'ensemble
 
 Ce projet implémente un système complet de monitoring en temps réel pour l'ingestion de données, utilisant une architecture moderne basée sur Kafka, Loki, Promtail et Grafana. Le système surveille automatiquement les pipelines de données, détecte les anomalies et génère des alertes intelligentes.
 
-## 🏗️ Architecture
+##  Architecture
 
 ```
 S3 → Producer.py → Kafka → Promtail → Loki → Grafana
@@ -12,9 +12,9 @@ S3 → Producer.py → Kafka → Promtail → Loki → Grafana
                                          Dashboards + Alertes
 ```
 
-## 📁 Structure du Projet
+##  Structure du Projet
 
-### 🔧 **Fichiers de Configuration Principaux**
+###  **Fichiers de Configuration Principaux**
 
 #### `docker-compose.yml`
 **Rôle**: Orchestrateur principal du système
@@ -44,7 +44,7 @@ S3 → Producer.py → Kafka → Promtail → Loki → Grafana
 - Indexation par labels pour requêtes rapides
 - Rétention et compression automatiques
 
-### 📊 **Dashboards Grafana** (`grafana-provisioning/dashboards/`)
+###  **Dashboards Grafana** (`grafana-provisioning/dashboards/`)
 
 #### `1-ingestion-health.json`
 **Rôle**: Dashboard principal de santé du système
@@ -77,7 +77,7 @@ S3 → Producer.py → Kafka → Promtail → Loki → Grafana
   - Recherche et filtrage en temps réel
   - Export des données pour analyse
 
-### 🚨 **Système d'Alerting** (`grafana-provisioning/alerting/`)
+###  **Système d'Alerting** (`grafana-provisioning/alerting/`)
 
 #### `1-echec-detecte.yml`
 **Rôle**: Détection d'échecs critiques
@@ -111,7 +111,7 @@ S3 → Producer.py → Kafka → Promtail → Loki → Grafana
 - **Seuil**: Warning (optimisation requise)
 - **Proxy**: Utilise le débit comme indicateur
 
-### ⚙️ **Configuration de Provisioning**
+###  **Configuration de Provisioning**
 
 #### `datasources/loki.yaml`
 **Rôle**: Configuration automatique de la source de données
@@ -131,16 +131,33 @@ S3 → Producer.py → Kafka → Promtail → Loki → Grafana
 - **Règles**: Auto-chargement des fichiers YAML
 - **Notifications**: Email (configurable)
 
-## 🚀 **Utilisation**
+##  **Utilisation**
 
-### Démarrage du Système
+### Connexion SSH au Serveur EC2
+
+#### Prérequis
+- Fichier de clé privée: `data.pem`
+- Adresse publique: `ec2-16-52-119-70.ca-central-1.compute.amazonaws.com`
+
+#### Instructions de Connexion
+```bash
+# 1. Sécuriser la clé privée
+chmod 400 "data.pem"
+
+# 2. Se connecter au serveur
+ssh -i "data.pem" ubuntu@ec2-16-52-119-70.ca-central-1.compute.amazonaws.com
+```
+
+### Démarrage du Système (sur EC2)
 ```bash
 cd /home/ubuntu/data-ingestion
 docker-compose up -d
 ```
 
-### Injection de Données
+### Injection de Données (sur EC2)
 ```bash
+# Depuis la connexion SSH
+cd /home/ubuntu/data-ingestion
 python3 producer.py
 ```
 
@@ -149,7 +166,7 @@ python3 producer.py
 - **Loki**: http://16.52.119.70:3100
 - **Kafka**: 16.52.119.70:9092
 
-## 📈 **Métriques Surveillées**
+##  **Métriques Surveillées**
 
 ### Indicateurs de Santé
 - **Succès/Échecs**: Comptage en temps réel
@@ -166,23 +183,30 @@ python3 producer.py
 - **Fraîcheur**: Délai depuis dernière exécution
 - **Qualité**: Taux de succès par source
 
-## 🔧 **Maintenance**
+##  **Maintenance**
 
 ### Nettoyage des Données
 ```bash
+# Depuis la connexion SSH
+cd /home/ubuntu/data-ingestion
 docker-compose down
-docker volume rm data-ingestion_loki-data data-ingestion_kafka-data
+docker volume rm data-ingestion_loki-data data-ingestion_kafka-data data-ingestion_promtail-data
 docker-compose up -d
 ```
 
-### Redémarrage après EC2
+### Redémarrage après Reboot EC2
 ```bash
+# 1. Se connecter via SSH
+ssh -i "data.pem" ubuntu@ec2-16-52-119-70.ca-central-1.compute.amazonaws.com
+
+# 2. Redémarrer les services
+cd /home/ubuntu/data-ingestion
 docker-compose up -d
 sleep 30
 python3 producer.py
 ```
 
-## 🎯 **Cas d'Usage**
+##  **Cas d'Usage**
 
 1. **Monitoring Opérationnel**: Surveillance 24/7 des pipelines
 2. **Détection d'Anomalies**: Alertes automatiques sur échecs
@@ -190,7 +214,7 @@ python3 producer.py
 4. **Débogage**: Investigation des erreurs avec logs détaillés
 5. **Reporting**: Métriques SLA pour management
 
-## 🏆 **Avantages**
+##  **Avantages**
 
 - **Temps Réel**: Détection instantanée des problèmes
 - **Scalabilité**: Architecture Kafka haute performance
