@@ -4,7 +4,7 @@ groups:
   - name: source-muette
     orgId: 1
     folder: data-alerts
-    interval: 5m
+    interval: 1m
     rules:
       - uid: source-muette
         title: "Source muette"
@@ -15,9 +15,7 @@ groups:
             relativeTimeRange:
               from: 4500
               to: 0
-            datasource:
-              type: loki
-              uid: Loki
+            datasourceUid: "Loki"
             model:
               expr: 'count_over_time({job="kafka-logs"}[75m])'
               intervalMs: 1000

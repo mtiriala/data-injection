@@ -15,9 +15,7 @@ groups:
             relativeTimeRange:
               from: 300
               to: 0
-            datasource:
-              type: loki
-              uid: Loki
+            datasourceUid: "Loki"
             model:
               expr: 'count_over_time({job="kafka-logs"} |= "FAILED" [5m])'
               intervalMs: 1000

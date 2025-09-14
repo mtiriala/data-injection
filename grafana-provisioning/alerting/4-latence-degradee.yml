@@ -4,7 +4,7 @@ groups:
   - name: latence-degradee
     orgId: 1
     folder: data-alerts
-    interval: 2m
+    interval: 1m
     rules:
       - uid: latence-degradee
         title: "Latence p95 dégradée"
@@ -15,9 +15,7 @@ groups:
             relativeTimeRange:
               from: 600
               to: 0
-            datasource:
-              type: loki
-              uid: Loki
+            datasourceUid: "Loki"
             model:
               expr: 'rate({job="kafka-logs"}[10m])'
               intervalMs: 1000

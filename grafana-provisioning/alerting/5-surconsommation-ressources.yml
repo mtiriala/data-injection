@@ -4,7 +4,7 @@ groups:
   - name: surconsommation-ressources
     orgId: 1
     folder: data-alerts
-    interval: 2m
+    interval: 1m
     rules:
       - uid: surconsommation-memoire
         title: "Surconsommation mémoire"
@@ -15,9 +15,7 @@ groups:
             relativeTimeRange:
               from: 300
               to: 0
-            datasource:
-              type: loki
-              uid: Loki
+            datasourceUid: "Loki"
             model:
               expr: 'rate({job="kafka-logs"}[5m])'
               intervalMs: 1000
@@ -41,9 +39,7 @@ groups:
             relativeTimeRange:
               from: 300
               to: 0
-            datasource:
-              type: loki
-              uid: Loki
+            datasourceUid: "Loki"
             model:
               expr: 'rate({job="kafka-logs"}[5m])'
               intervalMs: 1000
