@@ -208,15 +208,13 @@ python3 producer.py
 
 ##  **Cas d'Usage**
 
-1. **Monitoring Opérationnel**: Surveillance 24/7 des pipelines
-2. **Détection d'Anomalies**: Alertes automatiques sur échecs
-3. **Analyse de Performance**: Optimisation des sources lentes
-4. **Débogage**: Investigation des erreurs avec logs détaillés
-5. **Reporting**: Métriques SLA pour management
+1. **Détection d'Anomalies**: Alertes automatiques sur échecs
+2. **Analyse de Performance**: Optimisation des sources lentes
+3. **Débogage**: Investigation des erreurs avec logs détaillés
+4. **Reporting**: Métriques SLA pour management
 
 ##  **Avantages**
 
-- **Temps Réel**: Détection instantanée des problèmes
 - **Scalabilité**: Architecture Kafka haute performance
 - **Automatisation**: Provisioning complet via code
 - **Flexibilité**: Dashboards et alertes configurables
