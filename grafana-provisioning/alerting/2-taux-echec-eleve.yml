@@ -17,7 +17,7 @@ groups:
               to: 0
             datasourceUid: "Loki"
             model:
-              expr: 'count_over_time({job="kafka-logs"} |= "FAILED" [15m])'
+              expr: '(sum(count_over_time({job="kafka-logs", etat="FAILED"}[15m])) / sum(count_over_time({job="kafka-logs"}[15m]))) * 100'
               intervalMs: 1000
               maxDataPoints: 43200
         noDataState: OK

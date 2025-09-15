@@ -1,13 +1,13 @@
 apiVersion: 1
 
 groups:
-  - name: latence-degradee
+  - name: burst-erreurs
     orgId: 1
     folder: data-alerts
     interval: 1m
     rules:
-      - uid: latence-degradee
-        title: "Latence p95 dégradée"
+      - uid: burst-erreurs-source
+        title: "Burst d'erreurs par source"
         condition: A
         data:
           - refId: A
@@ -17,16 +17,17 @@ groups:
               to: 0
             datasourceUid: "Loki"
             model:
-              expr: 'quantile_over_time(0.95, {job="kafka-logs"} | json | unwrap Duree_secondes [10m])'
+              expr: 'sum by (source) (count_over_time({job="kafka-logs", etat="FAILED"}[10m])) or vector(0)'
               intervalMs: 1000
               maxDataPoints: 43200
         noDataState: OK
         execErrState: OK
-        for: 5m
+        for: 2m
         annotations:
-          description: "La latence p95 actuelle dépasse 2× la baseline (p95 sur 1h)"
-          summary: "Latence p95 dégradée - performance critique"
+          description: "Source {{$labels.source}} génère >3 erreurs en 10min - burst détecté"
+          summary: "Burst d'erreurs concentré - investigation requise"
         labels:
-          severity: warning
+          severity: critical
           team: data-engineering
+          alert_type: burst
         is_paused: false
